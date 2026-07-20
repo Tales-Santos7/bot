@@ -139,9 +139,9 @@ bot.action(/^check_(.+)$/, async (ctx) => {
     return await ctx.reply(
       `🎉 <b>Pagamento confirmado!</b>
 
-Seu acesso foi liberado.
+Seu acesso foi liberado. O prazer lhe aguarda.
 
-👇 Entre no grupo pelo botão abaixo.`,
+👇🔞 Entre no grupo pelo botão abaixo.`,
 
       {
         parse_mode: "HTML",
