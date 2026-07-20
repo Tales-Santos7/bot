@@ -1,4 +1,4 @@
-import mercadopagoService from "./mercadoPagoService.js";
+import mercadopagoService from "./asaasService.js";
 import orderService from "./orderService.js";
 
 class PaymentService {
@@ -12,7 +12,7 @@ class PaymentService {
       status: "pending",
     };
 
-    const payment = await mercadopagoService.createPix(order);
+    const payment = await pushinPayService.createPix(order);
 
     order.paymentId = payment.id;
     order.qrCode = payment.point_of_interaction.transaction_data.qr_code;

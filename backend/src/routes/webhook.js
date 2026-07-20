@@ -1,85 +1,62 @@
 import express from "express";
-import mercadopagoService from "../services/mercadoPagoService.js";
+import mercadopagoService from "../services/asaasService.js";
 import orderService from "../services/orderService.js";
 import telegramService from "../services/telegramService.js";
 import { bot } from "../bot/bot.js";
+import asaasService from "../services/asaasService.js";
 
 const router = express.Router();
 
 router.post("/mercadopago", async (req, res) => {
+  try {
+    const paymentId = req.body?.data?.id;
 
-    try {
+    if (!paymentId) {
+      return res.sendStatus(200);
+    }
 
-        const paymentId = req.body?.data?.id;
+    const payment = await asaasService.getPayment(paymentId);
 
-        if (!paymentId) {
+    if (payment.status !== "approved") {
+      return res.sendStatus(200);
+    }
 
-            return res.sendStatus(200);
+    const order = orderService.approve(paymentId);
 
-        }
+    if (!order) {
+      return res.sendStatus(200);
+    }
 
-        const payment = await mercadopagoService.getPayment(paymentId);
+    const inviteLink = await telegramService.createInvite(bot);
 
-        if (payment.status !== "approved") {
+    await bot.telegram.sendMessage(
+      order.telegramId,
 
-            return res.sendStatus(200);
-
-        }
-
-        const order = orderService.approve(paymentId);
-
-        if (!order) {
-
-            return res.sendStatus(200);
-
-        }
-
-        const inviteLink = await telegramService.createInvite(bot);
-
-        await bot.telegram.sendMessage(
-
-            order.telegramId,
-
-            `🎉 Pagamento aprovado!
+      `🎉 Pagamento aprovado!
 
 Seu acesso já está liberado.`,
 
-            {
+      {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: "🚀 Entrar no Grupo",
 
-                reply_markup: {
+                url: inviteLink,
+              },
+            ],
+          ],
+        },
+      },
+    );
 
-                    inline_keyboard: [
+    return res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
 
-                        [
-
-                            {
-
-                                text: "🚀 Entrar no Grupo",
-
-                                url: inviteLink
-
-                            }
-
-                        ]
-
-                    ]
-
-                }
-
-            }
-
-        );
-
-        return res.sendStatus(200);
-
-    } catch (err) {
-
-        console.error(err);
-
-        return res.sendStatus(500);
-
-    }
-
+    return res.sendStatus(500);
+  }
 });
 
 export default router;

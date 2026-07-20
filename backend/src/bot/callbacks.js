@@ -2,7 +2,7 @@ import { bot } from "./bot.js";
 import { menuPrincipal } from "./keyboards.js";
 import { products } from "./products.js";
 import paymentService from "../services/paymentService.js";
-import mercadopagoService from "../services/mercadoPagoService.js";
+import mercadopagoService from "../services/asaasService.js";
 import telegramService from "../services/telegramService.js";
 import QRCode from "qrcode";
 import { Markup, Input } from "telegraf";
@@ -65,26 +65,17 @@ products.forEach((product) => {
   bot.action(`comprar_${product.id}`, async (ctx) => {
     await ctx.answerCbQuery("⏳ Gerando PIX...");
 
-   try {
+    try {
+      const order = await paymentService.createOrder(product, ctx.from.id);
 
-    const order = await paymentService.createOrder(
-        product,
-        ctx.from.id
-    );
+      const qrBuffer = await QRCode.toBuffer(order.qrCode, {
+        type: "png",
+        width: 500,
+        margin: 1,
+      });
 
-    const qrBuffer = await QRCode.toBuffer(
-        order.qrCode,
-        {
-            type: "png",
-            width: 500,
-            margin: 1
-        }
-    );
-
-    await ctx.replyWithPhoto(
-        Input.fromBuffer(qrBuffer),
-        {
-          caption: `💳 <b>PAGAMENTO PIX</b>
+      await ctx.replyWithPhoto(Input.fromBuffer(qrBuffer), {
+        caption: `💳 <b>PAGAMENTO PIX</b>
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -106,21 +97,14 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
 
 ⏳ Assim que o pagamento for aprovado o acesso será liberado automaticamente.`,
 
-          parse_mode: "HTML",
+        parse_mode: "HTML",
 
-          reply_markup: Markup.inlineKeyboard([
-            [
-              Markup.button.callback(
-                "✅ Já paguei",
-                `check_${order.paymentId}`,
-              ),
-            ],
-            [Markup.button.callback("❌ Cancelar", "menu")],
-          ]).reply_markup,
-        },
-      );
-    } catch (err) {
-    }
+        reply_markup: Markup.inlineKeyboard([
+          [Markup.button.callback("✅ Já paguei", `check_${order.paymentId}`)],
+          [Markup.button.callback("❌ Cancelar", "menu")],
+        ]).reply_markup,
+      });
+    } catch (err) {}
   });
 });
 
@@ -131,7 +115,7 @@ bot.action(/^check_(.+)$/, async (ctx) => {
 
   const paymentId = ctx.match[1];
 
-  const payment = await mercadopagoService.getPayment(paymentId);
+  const payment = await asaasService.createPix(order);
 
   if (payment.status === "approved") {
     const inviteLink = await telegramService.createInvite(bot);
