@@ -1,5 +1,5 @@
 import express from "express";
-import mercadopagoService from "../services/mercadopagoService.js";
+import mercadopagoService from "../services/mercadoPagoService.js";
 import orderService from "../services/orderService.js";
 import telegramService from "../services/telegramService.js";
 import { bot } from "../bot/bot.js";
