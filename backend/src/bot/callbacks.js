@@ -141,13 +141,13 @@ bot.action(/^check_(.+)$/, async (ctx) => {
 
 Seu acesso foi liberado. O prazer lhe aguarda.
 
-👇🔞 Entre no grupo pelo botão abaixo.`,
+👇 Entre no grupo pelo botão abaixo.`,
 
       {
         parse_mode: "HTML",
 
         reply_markup: Markup.inlineKeyboard([
-          [Markup.button.url("🚀 Entrar no Grupo", inviteLink)],
+          [Markup.button.url("🔞Entrar no Grupo🔞", inviteLink)],
         ]).reply_markup,
       },
     );
