@@ -3,7 +3,6 @@ import asaasService from "../services/asaasService.js";
 import orderService from "../services/orderService.js";
 import telegramService from "../services/telegramService.js";
 import { bot } from "../bot/bot.js";
-import asaasService from "../services/asaasService.js";
 
 const router = express.Router();
 
