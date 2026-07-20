@@ -2,7 +2,7 @@ import { bot } from "./bot.js";
 import { menuPrincipal } from "./keyboards.js";
 import { products } from "./products.js";
 import paymentService from "../services/paymentService.js";
-import mercadopagoService from "../services/asaasService.js";
+import asaasService from "../services/asaasService.js";
 import telegramService from "../services/telegramService.js";
 import QRCode from "qrcode";
 import { Markup, Input } from "telegraf";
@@ -117,7 +117,7 @@ bot.action(/^check_(.+)$/, async (ctx) => {
 
   const payment = await asaasService.createPix(order);
 
-  if (payment.status === "approved") {
+  if (payment.status === "RECEIVED") {
     const inviteLink = await telegramService.createInvite(bot);
 
     return await ctx.reply(

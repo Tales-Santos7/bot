@@ -1,58 +1,54 @@
-import dotenv from "dotenv";
-dotenv.config();
+import axios from "axios";
 
-import { MercadoPagoConfig, Payment } from "mercadopago";
+class AsaasService {
+  constructor() {
+    this.api = axios.create({
+      baseURL: process.env.ASAAS_API_URL,
+      headers: {
+        access_token: process.env.ASAAS_API_KEY,
+        "Content-Type": "application/json",
+      },
+    });
+  }
 
-const client = new MercadoPagoConfig({
-    accessToken: process.env.MP_ACCESS_TOKEN
-});
+  async createCustomer(order) {
+    const { data } = await this.api.post("/customers", {
+      name: `Telegram ${order.telegramId}`,
+      email: `telegram_${order.telegramId}@bot.com`,
+    });
 
-const payment = new Payment(client);
+    return data;
+  }
 
-class MercadoPagoService {
+  async createPix(order) {
+    const customer = await this.createCustomer(order);
 
-    async createPix(order) {
+    const { data } = await this.api.post("/payments", {
+      customer: customer.id,
+      billingType: "PIX",
+      value: order.amount,
+      description: order.productName,
+      dueDate: new Date().toISOString().split("T")[0],
+    });
 
-        try {
+    return data;
+  }
 
-            const response = await payment.create({
+  async getPixQrCode(paymentId) {
+    const { data } = await this.api.get(
+      `/payments/${paymentId}/pixQrCode`
+    );
 
-                body: {
+    return data;
+  }
 
-                    transaction_amount: Number(order.amount),
+  async getPayment(paymentId) {
+    const { data } = await this.api.get(
+      `/payments/${paymentId}`
+    );
 
-                    description: order.productName,
-
-                    payment_method_id: "pix",
-
-                    payer: {
-                        email: `telegram_${order.telegramId}@oovip.com`
-                    }
-
-                }
-
-            });
-
-            return response;
-
-        } catch (error) {
-
-            console.error(error);
-
-            throw error;
-
-        }
-
-    }
-
-    async getPayment(id){
-
-        return await payment.get({
-            id
-        });
-
-    }
-
+    return data;
+  }
 }
 
-export default new MercadoPagoService();
+export default new AsaasService();
