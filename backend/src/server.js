@@ -3,7 +3,7 @@ dotenv.config();
 
 import app from "./app.js";
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || "https://bot-55rk.onrender.com";
 
 // Aguarda carregar o bot somente depois do dotenv
 await import("./bot/index.js");

@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
-
+console.log("MP_ACCESS_TOKEN =", process.env.MP_ACCESS_TOKEN);
 import { MercadoPagoConfig, Payment } from "mercadopago";
+
 
 const client = new MercadoPagoConfig({
     accessToken: process.env.MP_ACCESS_TOKEN
