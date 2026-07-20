@@ -2,7 +2,7 @@ import { bot } from "./bot.js";
 import { menuPrincipal } from "./keyboards.js";
 import { products } from "./products.js";
 import paymentService from "../services/paymentService.js";
-import mercadopagoService from "../services/mercadopagoService.js";
+import mercadopagoService from "../services/mercadoPagoService.js";
 import telegramService from "../services/telegramService.js";
 import QRCode from "qrcode";
 import { Markup, Input } from "telegraf";

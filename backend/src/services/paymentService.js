@@ -1,4 +1,4 @@
-import mercadopagoService from "./mercadopagoService.js";
+import mercadopagoService from "./mercadoPagoService.js";
 import orderService from "./orderService.js";
 
 class PaymentService {
