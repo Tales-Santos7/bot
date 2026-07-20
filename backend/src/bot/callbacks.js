@@ -81,8 +81,6 @@ products.forEach((product) => {
         }
     );
 
-    console.log(order);
-
     await ctx.replyWithPhoto(
         Input.fromBuffer(qrBuffer),
         {
@@ -122,7 +120,6 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
         },
       );
     } catch (err) {
-      console.log(err);
     }
   });
 });
