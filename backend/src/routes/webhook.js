@@ -1,5 +1,5 @@
 import express from "express";
-import asaasService from "../services/asaasService.js";
+import mercadopagoService from "../services/mercadopagoService.js";
 import orderService from "../services/orderService.js";
 import telegramService from "../services/telegramService.js";
 import { bot } from "../bot/bot.js";
@@ -14,7 +14,7 @@ router.post("/mercadopago", async (req, res) => {
       return res.sendStatus(200);
     }
 
-    const payment = await asaasService.getPayment(paymentId);
+    const payment = await mercadopagoService.getPayment(paymentId);
 
     if (payment.status !== "approved") {
       return res.sendStatus(200);
