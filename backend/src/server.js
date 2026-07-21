@@ -1,21 +1,13 @@
 import dotenv from "dotenv";
 dotenv.config();
-import express from "express";
 
-const app = express();
 import app from "./app.js";
+
+// Carrega o bot
+await import("./bot/index.js");
 
 const PORT = process.env.PORT || 3000;
 
-// Aguarda carregar o bot somente depois do dotenv
-await import("./bot/index.js");
-
-app.get("/", (req, res) => {
-  res.send("Bot Online");
-});
-
 app.listen(PORT, () => {
-  console.log(`API rodando na porta ${PORT}`);
+    console.log(`API rodando na porta ${PORT}`);
 });
-
-bot.launch();
