@@ -33,6 +33,7 @@ class OasyfyService {
         name: `Telegram ${order.telegramId}`,
         email: `telegram_${order.telegramId}@bot.com`,
         phone: "11999999999",
+        document: "08261910539",
       },
 
       products: [
