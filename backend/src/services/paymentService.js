@@ -1,4 +1,4 @@
-import mercadopagoService from "./mercadopagoService.js";
+import mercadopagoService from "./oasyfyService.js";
 import orderService from "./orderService.js";
 
 class PaymentService {
@@ -11,15 +11,13 @@ class PaymentService {
       amount: product.price,
     };
 
-    const payment = await mercadopagoService.createPix(order);
+    const payment = await oasyfyService.createPix(order);
 
-    order.paymentId = payment.id;
+    order.paymentId = payment.transactionId;
 
-    order.qrCode =
-      payment.point_of_interaction.transaction_data.qr_code;
+    order.qrCode = payment.pix.code;
 
-    order.qrCodeBase64 =
-      payment.point_of_interaction.transaction_data.qr_code_base64;
+    order.qrCodeBase64 = payment.pix.base64;
 
     order.status = "pending";
 

@@ -18,7 +18,7 @@ class OrderService {
 
         if (!order) return null;
 
-        order.status = "approved";
+        order.status = "COMPLETED";
 
         return order;
 
