@@ -5,10 +5,20 @@ import telegramService from "../services/telegramService.js";
 import { bot } from "../bot/bot.js";
 
 const router = express.Router();
+const token = req.headers["x-webhook-token"];
+
+if (token !== process.env.OASYFY_WEBHOOK_TOKEN) {
+    return res.sendStatus(401);
+}
 
 router.post("/oasyfy", async (req, res) => {
   console.log(req.body);
     res.sendStatus(200);
+    console.log("HEADERS");
+    console.log(req.headers);
+
+    console.log("BODY");
+    console.log(JSON.stringify(req.body, null, 2));
   try {
     const paymentId = req.body?.data?.id;
 

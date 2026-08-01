@@ -14,6 +14,7 @@ class PaymentService {
     const payment = await oasyfyService.createPix(order);
 
     order.paymentId = payment.transactionId;
+    console.log(payment);
 
     order.qrCode = payment.pix.code;
 

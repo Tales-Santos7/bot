@@ -7,6 +7,7 @@ class OasyfyService {
       headers: {
         Authorization: `Bearer ${process.env.OASYFY_TOKEN}`,
         "Content-Type": "application/json",
+        "User-Agent": "TelegramBot/1.0",
       },
     });
   }
@@ -21,7 +22,7 @@ class OasyfyService {
         name: `Telegram ${order.telegramId}`,
         email: `telegram_${order.telegramId}@bot.com`,
         phone: "11999999999",
-        document: "00000000000"
+        document: "00000000000",
       },
 
       products: [
@@ -29,24 +30,23 @@ class OasyfyService {
           id: order.productId.toString(),
           name: order.productName,
           quantity: 1,
-          price: Number(order.amount)
-        }
+          price: Number(order.amount),
+        },
       ],
 
       dueDate: new Date().toISOString().split("T")[0],
 
-      callbackUrl: `${process.env.API_URL}/webhook/oasyfy`
+      callbackUrl: `${process.env.API_URL}/webhook/oasyfy`,
     });
 
     console.log("Resposta da Oasyfy:");
-console.log(JSON.stringify(data, null, 2));
+    console.log(JSON.stringify(data, null, 2));
     console.log(data);
     return data;
   }
 
   async getPayment(id) {
-    const { data } = await this.api.get(`/gateway/payment/${id}`);
-
+    const { data } = await this.api.get(`/gateway/transactions/${id}`);
     return data;
   }
 }

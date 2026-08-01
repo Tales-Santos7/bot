@@ -68,11 +68,7 @@ products.forEach((product) => {
     try {
       const order = await paymentService.createOrder(product, ctx.from.id);
 
-      const qrBuffer = await QRCode.toBuffer(order.qrCode, {
-        type: "png",
-        width: 500,
-        margin: 1,
-      });
+      const qrBuffer = Buffer.from(order.qrCodeBase64, "base64");
 
       await ctx.replyWithPhoto(Input.fromBuffer(qrBuffer), {
         caption: `💳 <b>PAGAMENTO PIX</b>
@@ -104,7 +100,13 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
           [Markup.button.callback("❌ Cancelar", "menu")],
         ]).reply_markup,
       });
-    } catch (err) {}
+    } catch (err) {
+      console.error(err.response?.data);
+
+      console.error(err.message);
+
+      await ctx.reply("Erro ao gerar o PIX.");
+    }
   });
 });
 
