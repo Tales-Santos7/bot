@@ -68,7 +68,11 @@ products.forEach((product) => {
     try {
       const order = await paymentService.createOrder(product, ctx.from.id);
 
-      const qrBuffer = Buffer.from(order.qrCodeBase64, "base64");
+      const qrBuffer = await QRCode.toBuffer(order.qrCode, {
+        type: "png",
+        width: 500,
+        margin: 1,
+      });
 
       await ctx.replyWithPhoto(Input.fromBuffer(qrBuffer), {
         caption: `💳 <b>PAGAMENTO PIX</b>

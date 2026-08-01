@@ -19,11 +19,7 @@ router.post("/oasyfy", async (req, res) => {
 
   try {
     // Descobriremos o formato correto quando o webhook chegar.
-    const paymentId =
-      req.body?.data?.id ||
-      req.body?.transactionId ||
-      req.body?.id ||
-      req.body?.transaction?.id;
+    const paymentId = req.body.transaction?.id;
 
     if (!paymentId) {
       console.log("⚠️ Nenhum paymentId encontrado no payload.");
@@ -32,24 +28,14 @@ router.post("/oasyfy", async (req, res) => {
 
     console.log("🔎 Consultando transação:", paymentId);
 
-    const payment = await oasyfyService.getPayment(paymentId);
+    const event = req.body.event;
+    const status = req.body.transaction?.status;
 
-    console.log("RESPOSTA DA API:");
-    console.log(JSON.stringify(payment, null, 2));
-
-    const status =
-      payment?.status ||
-      payment?.data?.status ||
-      payment?.transaction?.status;
-
+    console.log("EVENTO:", event);
     console.log("STATUS:", status);
 
-    if (
-      status !== "COMPLETED" &&
-      status !== "APPROVED" &&
-      status !== "PAID"
-    ) {
-      console.log("⏳ Pagamento ainda não aprovado.");
+    if (status !== "PAID" && status !== "COMPLETED") {
+      console.log("Pagamento ainda pendente.");
       return res.sendStatus(200);
     }
 
@@ -81,7 +67,7 @@ Clique no botão abaixo para entrar no grupo.`,
             ],
           ],
         },
-      }
+      },
     );
 
     console.log("✅ Convite enviado para:", order.telegramId);
