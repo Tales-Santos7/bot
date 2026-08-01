@@ -2,10 +2,18 @@ import axios from "axios";
 
 class OasyfyService {
   constructor() {
+    console.log("===== OASYFY =====");
+    console.log("PUBLIC:", process.env.OASYFY_PUBLIC_KEY);
+    console.log(
+      "SECRET:",
+      process.env.OASYFY_SECRET_KEY ? "OK" : "NÃO ENCONTRADA",
+    );
+
     this.api = axios.create({
       baseURL: "https://app.oasyfy.com/api/v1",
       headers: {
-        Authorization: `Bearer ${process.env.OASYFY_TOKEN}`,
+        "x-public-key": process.env.OASYFY_PUBLIC_KEY,
+        "x-secret-key": process.env.OASYFY_SECRET_KEY,
         "Content-Type": "application/json",
         "User-Agent": "TelegramBot/1.0",
       },
