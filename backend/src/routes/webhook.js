@@ -1,12 +1,12 @@
 import express from "express";
-import mercadopagoService from "../services/oasyfyService.js";
+import oasyfyService from "../services/oasyfyService.js";
 import orderService from "../services/orderService.js";
 import telegramService from "../services/telegramService.js";
 import { bot } from "../bot/bot.js";
 
 const router = express.Router();
 
-router.post("/mercadopago", async (req, res) => {
+router.post("/oasyfy", async (req, res) => {
   try {
     const paymentId = req.body?.data?.id;
 

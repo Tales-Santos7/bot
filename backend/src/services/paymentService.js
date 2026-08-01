@@ -1,4 +1,4 @@
-import mercadopagoService from "./oasyfyService.js";
+import oasyfyService from "./oasyfyService.js";
 import orderService from "./orderService.js";
 
 class PaymentService {
