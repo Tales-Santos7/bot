@@ -38,6 +38,9 @@ class OasyfyService {
       callbackUrl: `${process.env.API_URL}/webhook/oasyfy`
     });
 
+    console.log("Resposta da Oasyfy:");
+console.log(JSON.stringify(data, null, 2));
+    console.log(data);
     return data;
   }
 

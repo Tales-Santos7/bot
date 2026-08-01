@@ -7,6 +7,8 @@ import { bot } from "../bot/bot.js";
 const router = express.Router();
 
 router.post("/oasyfy", async (req, res) => {
+  console.log(req.body);
+    res.sendStatus(200);
   try {
     const paymentId = req.body?.data?.id;
 
