@@ -13,6 +13,9 @@ class OasyfyService {
   }
 
   async createPix(order) {
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 1);
+
     const { data } = await this.api.post("/gateway/pix/receive", {
       identifier: order.orderId.toString(),
 
@@ -34,7 +37,7 @@ class OasyfyService {
         },
       ],
 
-      dueDate: new Date().toISOString().split("T")[0],
+      dueDate: dueDate.toISOString().split("T")[0],
 
       callbackUrl: `${process.env.API_URL}/webhook/oasyfy`,
     });
