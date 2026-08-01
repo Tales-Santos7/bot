@@ -2,13 +2,6 @@ import axios from "axios";
 
 class OasyfyService {
   constructor() {
-    console.log("===== OASYFY =====");
-    console.log("PUBLIC:", process.env.OASYFY_PUBLIC_KEY);
-    console.log(
-      "SECRET:",
-      process.env.OASYFY_SECRET_KEY ? "OK" : "NÃO ENCONTRADA",
-    );
-
     this.api = axios.create({
       baseURL: "https://app.oasyfy.com/api/v1",
       headers: {
@@ -50,9 +43,6 @@ class OasyfyService {
       callbackUrl: `${process.env.API_URL}/webhook/oasyfy`,
     });
 
-    console.log("Resposta da Oasyfy:");
-    console.log(JSON.stringify(data, null, 2));
-    console.log(data);
     return data;
   }
 
