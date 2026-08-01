@@ -3,7 +3,7 @@ export const products = [
         id: 1,
         callback: "produto_1",
         name: "🏳️‍⚧️ Top Trans VIP",
-        price: 0.90,
+        price: 1.00,
 
         description: `
 🏳️‍⚧️ <b>TOP TRANS VIP</b>
