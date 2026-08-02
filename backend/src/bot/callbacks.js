@@ -128,17 +128,21 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
 // VERIFICAR PAGAMENTO
 
 bot.action(/^check_(.+)$/, async (ctx) => {
-  await ctx.answerCbQuery("🔍 Verificando seu pagamento...");
+  try {
+    await ctx.answerCbQuery();
 
-  const paymentId = ctx.match[1];
+    const paymentId = ctx.match[1];
 
-  const order = orderService.find(paymentId);
+    console.log("PaymentId:", paymentId);
 
-  if (!order) {
-    return ctx.reply("❌ Pedido não encontrado.");
+    const payment = await oasyfyService.getPayment(paymentId);
+
+    console.log(JSON.stringify(payment, null, 2));
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+
+    return ctx.reply("Erro ao consultar o pagamento.");
   }
-
-  const payment = await oasyfyService.getPayment(paymentId);
 
   if (payment.status === "COMPLETED") {
     const inviteLink = await telegramService.createInvite(bot, order.groupId);
