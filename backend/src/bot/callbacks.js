@@ -16,7 +16,14 @@ import { Markup, Input } from "telegraf";
 
 bot.action("menu", async (ctx) => {
   await ctx.editMessageCaption(
-    `🔥 <b>Bem-vindo(a) à Área VIP!</b> Aqui você encontra conteúdos exclusivos, atualizados e organizados por categoria. ✨ Escolha uma opção abaixo e descubra o que preparamos para você. 👇 Toque em um dos botões para continuar.`,
+    `🔥 𝗕𝗘𝗠-𝗩𝗜𝗡𝗗𝗢 𝗔𝗢 𝗨𝗡𝗜𝗩𝗘𝗥𝗦𝗢 DO PRAZER 🔥
+🇧🇷 Faveladinhas gostosas, desesperadinhas, ninfetas de bairro, magrinhas peitudas, todo tipo de vazado bruto em um único grupo 😈🥵
+
+𝗔𝗤𝗨𝗜 É 𝗠𝗔𝗧𝗘𝗥𝗜𝗔𝗟 𝗦𝗨𝗝𝗢, 𝗦𝗘𝗠 𝗙𝗜𝗟𝗧𝗥𝗢:
+
+Selecione o produto que deseja acessar.
+
+Basta clicar em um botão abaixo.`,
     { reply_markup: menuPrincipal.reply_markup },
   );
 });
