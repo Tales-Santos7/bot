@@ -3,12 +3,24 @@ export const products = [
     id: 1,
     callback: "produto_1",
     name: "🔞🔓Vazadinhos da net",
-    price: 10.90,
+    price: 10.9,
 
     groupId: "-1004310743484",
 
     description: `
 🔞 <b>VAZADINHOS DA NET</b>
+
+   ━━━━━━━━━━━━━━━━━━
+
+  🔒 Grupo Privado
+
+  📁 Conteúdo organizado
+
+  📈 Atualizações frequentes
+
+  ⚡ Liberação automática
+
+  ━━━━━━━━━━━━━━━━━━
 
 💰 <b>Valor:</b> R$ 10,90`,
   },
@@ -23,6 +35,18 @@ export const products = [
 
   //     description: `
   // 🏳️‍⚧️ <b>TOP TRANS VIP</b>
+
+//      ━━━━━━━━━━━━━━━━━━
+
+//   🔒 Grupo Privado
+
+//   📁 Conteúdo organizado
+
+//   📈 Atualizações frequentes
+
+//   ⚡ Liberação automática
+
+//   ━━━━━━━━━━━━━━━━━━
 
   // 💰 <b>Valor:</b> R$ 9,90`
   //   },
@@ -50,7 +74,7 @@ export const products = [
 
   // ━━━━━━━━━━━━━━━━━━
 
-  // 💰 <b>Valor:</b> R$ 99,90`
+  // 💰 <b>Valor:</b> R$ 15,90`
   //   },
 
   //   {
