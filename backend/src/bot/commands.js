@@ -4,7 +4,7 @@ import { Input } from "telegraf";
 
 bot.start(async (ctx) => {
 
-   await ctx.replyWithVideo(
+  const msg = await ctx.replyWithVideo(
     Input.fromLocalFile("./src/bot/images/banner.mp4"),
     {
             caption:
@@ -21,5 +21,8 @@ Basta clicar em um botão abaixo.`,
         }
 
     );
+
+        console.log("FILE_ID:");
+    console.log(msg.video.file_id);
 
 });
