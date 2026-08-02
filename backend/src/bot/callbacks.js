@@ -39,21 +39,7 @@ Basta clicar em um botão abaixo.`,
 products.forEach((product) => {
   bot.action(product.callback, async (ctx) => {
     await ctx.editMessageCaption(
-      `${product.description}
-
-━━━━━━━━━━━━━━━━━━
-
-🚀 <b>Entre em menos de 1 minuto!</b>
-
-✅ Pagamento rápido via PIX
-
-⚡ Liberação automática
-
-🔓 Acesso imediato após a confirmação
-
-🎯 Sem espera. Sem burocracia.
-
-👇 <b>Clique em "🔞🔓 Comprar Agora"</b> e receba seu acesso em poucos segundos.`,
+      `${product.description}`,
 
       {
         parse_mode: "HTML",
