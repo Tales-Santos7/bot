@@ -15,13 +15,9 @@ import { Markup, Input } from "telegraf";
 
 bot.action("menu", async (ctx) => {
   await ctx.editMessageCaption(
-    `🔥 <b>Bem-vindo(a) à Área VIP!</b>
+    `👋 Bem-vindo!
 
-Aqui você encontra conteúdos exclusivos, atualizados e organizados por categoria.
-
-✨ Escolha uma opção abaixo e descubra o que preparamos para você.
-
-👇 Toque em um dos botões para continuar.`,
+Escolha um produto abaixo.`,
     {
       reply_markup: menuPrincipal.reply_markup,
     },
@@ -39,19 +35,18 @@ products.forEach((product) => {
     await ctx.editMessageCaption(
       `${product.description}
 
-━━━━━━━━━━━━━━━━━━
-
-⚡ <b>Acesso imediato</b>
-🔒 Conteúdo exclusivo
-📲 Liberação automática após o pagamento
-
-👇 Clique em <b>Comprar Agora</b> e receba seu acesso em poucos segundos.`,
+👇 Clique em Comprar Agora para continuar.`,
 
       {
         parse_mode: "HTML",
 
         reply_markup: Markup.inlineKeyboard([
-          [Markup.button.callback("🚀 Comprar Agora", `comprar_${product.id}`)],
+          [
+            Markup.button.callback(
+              `💳 Comprar • R$ ${product.price.toFixed(2).replace(".", ",")}`,
+              `comprar_${product.id}`,
+            ),
+          ],
 
           [Markup.button.callback("⬅️ Voltar", "menu")],
         ]).reply_markup,
@@ -80,37 +75,32 @@ products.forEach((product) => {
       });
 
       await ctx.replyWithPhoto(Input.fromBuffer(qrBuffer), {
-        caption: `💎 <b>SEU PAGAMENTO ESTÁ PRONTO!</b>
+        caption: `💳 <b>PAGAMENTO PIX</b>
 
 ━━━━━━━━━━━━━━━━━━
 
-📦 <b>Produto</b>
+📦 Produto
+
 ${order.productName}
 
-💰 <b>Valor</b>
+💰 Valor
+
 R$ ${order.amount.toFixed(2).replace(".", ",")}
 
 ━━━━━━━━━━━━━━━━━━
 
-📱 <b>PIX Copia e Cola</b>
+📋 PIX Copia e Cola
 
 <code>${order.qrCode}</code>
 
 ━━━━━━━━━━━━━━━━━━
 
-⚡ Faça o pagamento utilizando o QR Code ou copie o código PIX acima.
-
-✅ Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.
-
-🚀 É rápido e leva apenas alguns segundos.`,
+⏳ Assim que o pagamento for aprovado o acesso será liberado automaticamente.`,
 
         parse_mode: "HTML",
 
         reply_markup: Markup.inlineKeyboard([
-          Markup.button.callback(
-            "✅ Já realizei o pagamento",
-            `check_${order.paymentId}`,
-          ),
+          [Markup.button.callback("✅ Já paguei", `check_${order.paymentId}`)],
           [Markup.button.callback("❌ Cancelar", "menu")],
         ]).reply_markup,
       });
@@ -127,44 +117,37 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
 // VERIFICAR PAGAMENTO
 
 bot.action(/^check_(.+)$/, async (ctx) => {
-  await ctx.answerCbQuery("🔍 Verificando seu pagamento...");
+  await ctx.answerCbQuery("Verificando pagamento...");
 
   const paymentId = ctx.match[1];
 
   const payment = await oasyfyService.getPayment(paymentId);
 
   if (payment.status === "COMPLETED") {
-    const inviteLink = await telegramService.createInvite(bot, order.groupId);
+    const inviteLink = await telegramService.createInvite(bot);
+
     return await ctx.reply(
-      `🎉 <b>Pagamento confirmado com sucesso!</b>
+      `🎉 <b>Pagamento confirmado!</b>
 
-━━━━━━━━━━━━━━━━━━
+Seu acesso foi liberado. O prazer lhe aguarda.
 
-✅ Seu acesso já foi liberado.
-
-🚀 Basta tocar no botão abaixo para entrar imediatamente.
-
-Bom proveito! 😎`,
+👇 Entre no grupo pelo botão abaixo.`,
 
       {
         parse_mode: "HTML",
 
         reply_markup: Markup.inlineKeyboard([
-          [Markup.button.url("🔞🔓 Acessar Agora", inviteLink)],
+          [Markup.button.url("🔞Entrar no Grupo🔞", inviteLink)],
         ]).reply_markup,
       },
     );
   }
 
   return await ctx.reply(
-    `⌛ <b>Ainda estamos aguardando a confirmação.</b>
+    `⏳ Ainda não identificamos o pagamento.
 
-Isso normalmente leva alguns segundos após o pagamento.
+Quando concluir o pagamento, clique novamente em:
 
-Assim que concluir o PIX, toque novamente em:
-
-<b>✅ Já paguei</b>
-
-💡 Caso tenha acabado de pagar, aguarde um instante e tente novamente.`,
+✅ Já paguei`,
   );
 });
