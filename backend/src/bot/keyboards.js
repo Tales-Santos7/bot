@@ -14,18 +14,18 @@ products.forEach(product => {
 
 });
 
-buttons.push([
-    Markup.button.callback(
-        "👤 Minha Assinatura",
-        "minha_assinatura"
-    )
-]);
+// buttons.push([
+//     Markup.button.callback(
+//         "👤 Minha Assinatura",
+//         "minha_assinatura"
+//     )
+// ]);
 
-buttons.push([
-    Markup.button.callback(
-        "💬 Suporte",
-        "suporte"
-    )
-]);
+// buttons.push([
+//     Markup.button.callback(
+//         "💬 Suporte",
+//         "suporte"
+//     )
+// ]);
 
 export const menuPrincipal = Markup.inlineKeyboard(buttons);

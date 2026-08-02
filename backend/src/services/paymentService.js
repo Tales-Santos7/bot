@@ -9,6 +9,7 @@ class PaymentService {
       productId: product.id,
       productName: product.name,
       amount: product.price,
+      groupId: product.groupId,
     };
 
     const payment = await oasyfyService.createPix(order);

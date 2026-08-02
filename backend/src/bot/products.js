@@ -1,73 +1,81 @@
 export const products = [
-    {
-        id: 1,
-        callback: "produto_1",
-        name: "🏳️‍⚧️ Top Trans VIP",
-        price: 1.00,
+  {
+    id: 1,
+    callback: "produto_1",
+    name: "🔞🔓Vazadinhos da net",
+    price: 10.90,
 
-        description: `
-🏳️‍⚧️ <b>TOP TRANS VIP</b>
+    groupId: "-1004310743484",
 
-━━━━━━━━━━━━━━━━━━
+    description: `
+🔞 <b>VAZADINHOS DA NET</b>
 
-🔒 Grupo Privado
+💰 <b>Valor:</b> R$ 10,90`,
+  },
 
-📁 Conteúdo organizado
+  //   {
+  //     id: 2,
+  //     callback: "produto_1",
+  //     name: "🏳️‍⚧️ Top Trans VIP",
+  //     price: 9.90,
 
-📈 Atualizações frequentes
+  //     groupId: "-1004495262425",
 
-⚡ Liberação automática
+  //     description: `
+  // 🏳️‍⚧️ <b>TOP TRANS VIP</b>
 
-━━━━━━━━━━━━━━━━━━
+  // 💰 <b>Valor:</b> R$ 9,90`
+  //   },
 
-💰 <b>Valor:</b> R$ 59,90`
-    },
+  //   {
+  //     id: 3,
+  //     callback: "produto_2",
+  //     name: "😈 OnlyFans + Privacy",
+  //     price: 15.90,
 
-    {
-        id: 2,
-        callback: "produto_2",
-        name: "😈 OnlyFans + Privacy",
-        price: 99.90,
+  //     groupId: "-1004358906645",
 
-        description: `
-😈 <b>ONLYFANS + PRIVACY VIP</b>
+  //     description: `
+  // 😈 <b>ONLYFANS + PRIVACY VIP</b>
 
-━━━━━━━━━━━━━━━━━━
+  // ━━━━━━━━━━━━━━━━━━
 
-🔒 Grupo Privado
+  // 🔒 Grupo Privado
 
-📁 Conteúdo organizado
+  // 📁 Conteúdo organizado
 
-📈 Atualizações frequentes
+  // 📈 Atualizações frequentes
 
-⚡ Liberação automática
+  // ⚡ Liberação automática
 
-━━━━━━━━━━━━━━━━━━
+  // ━━━━━━━━━━━━━━━━━━
 
-💰 <b>Valor:</b> R$ 99,90`
-    },
+  // 💰 <b>Valor:</b> R$ 99,90`
+  //   },
 
-    {
-        id: 3,
-        callback: "produto_3",
-        name: "🔥 Faveladinhas VIP",
-        price: 69.90,
+  //   {
+  //     id: 4,
+  //     callback: "produto_3",
+  //     name: "🔥 Faveladinhas VIP",
+  //     price: 69.90,
 
-        description: `
-🔥 <b>FAVELADINHAS VIP</b>
+  //     groupId: "-1003333333333",
 
-━━━━━━━━━━━━━━━━━━
+  //     description: `
+  // 🔥 <b>FAVELADINHAS VIP</b>
 
-🔒 Grupo Privado
+  // ━━━━━━━━━━━━━━━━━━
 
-📁 Conteúdo organizado
+  // 🔒 Grupo Privado
 
-📈 Atualizações frequentes
+  // 📁 Conteúdo organizado
 
-⚡ Liberação automática
+  // 📈 Atualizações frequentes
 
-━━━━━━━━━━━━━━━━━━
+  // ⚡ Liberação automática
 
-💰 <b>Valor:</b> R$ 69,90`
-    }
+  // ━━━━━━━━━━━━━━━━━━
+
+  // 💰 <b>Valor:</b> R$ 69,90`
+  //   }
 ];

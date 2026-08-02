@@ -7,48 +7,47 @@ import { bot } from "../bot/bot.js";
 const router = express.Router();
 
 router.post("/oasyfy", async (req, res) => {
- 
   try {
     // Descobriremos o formato correto quando o webhook chegar.
     const paymentId = req.body.transaction?.id;
 
     if (!paymentId) {
-     
       return res.sendStatus(200);
     }
 
     const event = req.body.event;
     const status = req.body.transaction?.status;
 
-
     if (status !== "PAID" && status !== "COMPLETED") {
-  
       return res.sendStatus(200);
     }
 
     const order = orderService.approve(paymentId);
 
     if (!order) {
-     
       return res.sendStatus(200);
     }
 
-    const inviteLink = await telegramService.createInvite(bot);
+    const inviteLink = await telegramService.createInvite(bot, order.groupId);
 
     await bot.telegram.sendMessage(
       order.telegramId,
-      `🎉 <b>Pagamento aprovado!</b>
+      `🎉 <b>Pagamento confirmado com sucesso!</b>
 
-Seu acesso foi liberado.
+━━━━━━━━━━━━━━━━━━
 
-Clique no botão abaixo para entrar no grupo.`,
+✅ Seu acesso já foi liberado.
+
+🚀 Basta tocar no botão abaixo para entrar imediatamente.
+
+Bom proveito! 😎`,
       {
         parse_mode: "HTML",
         reply_markup: {
           inline_keyboard: [
             [
               {
-                text: "🚀 Entrar no Grupo",
+                text: "🔞🔓 Acessar Agora",
                 url: inviteLink,
               },
             ],
