@@ -5,6 +5,7 @@ import { Telegraf } from "telegraf";
 
 export const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// bot.command("id", async (ctx) => {
-//     await ctx.reply(`ID deste chat: ${ctx.chat.id}`);
+// bot.on("channel_post", (ctx) => {
+//   console.log("Canal:");
+//   console.log(ctx.update.channel_post.chat);
 // });

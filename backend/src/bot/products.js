@@ -5,7 +5,7 @@ export const products = [
     name: "🔞🔓Vazadinhos da net",
     price: 10.9,
 
-    groupId: "-1004310743484",
+    groupId: "-100440198662",
 
    description: `
 🔞 <b>VAZADINHOS DA NET</b>
@@ -35,7 +35,7 @@ export const products = [
   //     name: "🏳️‍⚧️ Top Trans VIP",
   //     price: 9.90,
 
-  //     groupId: "-1004495262425",
+  //     groupId: "-1004331849848",
 
   //     description: `
   // 🏳️‍⚧️ <b>TOP TRANS VIP</b>
@@ -61,7 +61,7 @@ export const products = [
   //     name: "😈 OnlyFans + Privacy",
   //     price: 15.90,
 
-  //     groupId: "-1004358906645",
+  //     groupId: "-1004405156525",
 
   //     description: `
   // 😈 <b>ONLYFANS + PRIVACY VIP</b>
