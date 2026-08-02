@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import axios from "axios";
 
 class OasyfyService {
@@ -8,7 +11,6 @@ class OasyfyService {
         "x-public-key": process.env.OASYFY_PUBLIC_KEY,
         "x-secret-key": process.env.OASYFY_SECRET_KEY,
         "Content-Type": "application/json",
-        "User-Agent": "TelegramBot/1.0",
       },
     });
   }
@@ -20,13 +22,13 @@ class OasyfyService {
     const { data } = await this.api.post("/gateway/pix/receive", {
       identifier: order.orderId.toString(),
 
-      amount: Number(order.amount),
+      amount: order.amount,
 
       client: {
         name: `Telegram ${order.telegramId}`,
         email: `telegram_${order.telegramId}@bot.com`,
         phone: "11999999999",
-         document: process.env.OASYFY_DOCUMENT,
+        document: process.env.OASYFY_DOCUMENT,
       },
 
       products: [
@@ -34,7 +36,7 @@ class OasyfyService {
           id: order.productId.toString(),
           name: order.productName,
           quantity: 1,
-          price: Number(order.amount),
+          price: order.amount,
         },
       ],
 
@@ -43,11 +45,6 @@ class OasyfyService {
       callbackUrl: `${process.env.API_URL}/webhook/oasyfy`,
     });
 
-    return data;
-  }
-
-  async getPayment(id) {
-    const { data } = await this.api.get(`/gateway/transactions/${id}`);
     return data;
   }
 }

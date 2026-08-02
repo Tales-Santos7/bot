@@ -8,27 +8,26 @@ const router = express.Router();
 
 router.post("/oasyfy", async (req, res) => {
   try {
-    // Descobriremos o formato correto quando o webhook chegar.
-   const paymentId = req.body.transactionId;
+    console.log("WEBHOOK RECEBIDO");
+    console.log(JSON.stringify(req.body, null, 2));
 
-    if (!paymentId) {
-      return res.sendStatus(200);
-    }
+    const paymentId = req.body.transaction?.id;
+    const status = req.body.transaction?.status;
 
-    const event = req.body.event;
-    const status = req.body.status;
+    if (!paymentId) return res.sendStatus(200);
 
-    if (status !== "COMPLETED" && status !== "COMPLETED") {
-      return res.sendStatus(200);
-    }
+    if (status !== "COMPLETED") return res.sendStatus(200);
 
     const order = orderService.approve(paymentId);
 
     if (!order) {
+      console.log("Pedido não encontrado.");
       return res.sendStatus(200);
     }
 
-    const inviteLink = await telegramService.createInvite(bot, order.groupId);
+    console.log("Pagamento aprovado!");
+
+    const invite = await telegramService.createInvite(bot, order.groupId);
 
     await bot.telegram.sendMessage(
       order.telegramId,
@@ -48,7 +47,7 @@ Bom proveito! 😎`,
             [
               {
                 text: "🔞🔓 Acessar Agora",
-                url: inviteLink,
+                url: invite,
               },
             ],
           ],
@@ -56,14 +55,11 @@ Bom proveito! 😎`,
       },
     );
 
-    console.log("✅ Convite enviado para:", order.telegramId);
-
-    return res.sendStatus(200);
+    res.sendStatus(200);
   } catch (err) {
-    console.error("ERRO WEBHOOK:");
-    console.error(err.response?.data || err.message || err);
+    console.log(err);
 
-    return res.sendStatus(500);
+    res.sendStatus(500);
   }
 });
 

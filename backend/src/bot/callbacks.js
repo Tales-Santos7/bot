@@ -2,7 +2,6 @@ import { bot } from "./bot.js";
 import { menuPrincipal } from "./keyboards.js";
 import { products } from "./products.js";
 import paymentService from "../services/paymentService.js";
-import oasyfyService from "../services/oasyfyService.js";
 import telegramService from "../services/telegramService.js";
 import orderService from "../services/orderService.js";
 import QRCode from "qrcode";
@@ -69,7 +68,7 @@ products.forEach((product) => {
 
     try {
       const order = await paymentService.createOrder(product, ctx.from.id);
-
+      console.log(order);
       const qrBuffer = await QRCode.toBuffer(order.qrCode, {
         type: "png",
         width: 500,
@@ -127,29 +126,25 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
 
 // VERIFICAR PAGAMENTO
 
+// VERIFICAR PAGAMENTO
+
 bot.action(/^check_(.+)$/, async (ctx) => {
-  try {
-    await ctx.answerCbQuery();
+  await ctx.answerCbQuery();
 
-    const paymentId = ctx.match[1];
+  const paymentId = ctx.match[1];
 
-    console.log("PaymentId:", paymentId);
+  const order = orderService.find(paymentId);
 
-    const order = orderService.find(paymentId);
+  if (!order) {
+    return ctx.reply("❌ Não encontramos esse pedido. Gere um novo pagamento.");
+  }
 
-    if (!order) {
-      return await ctx.reply("Pedido não encontrado.");
-    }
+  // O webhook já marcou como pago?
+  if (order.status === "COMPLETED") {
+    const inviteLink = await telegramService.createInvite(bot, order.groupId);
 
-    const payment = await oasyfyService.getPayment(paymentId);
-
-    console.log(JSON.stringify(payment, null, 2));
-
-    if (payment.status === "COMPLETED") {
-      const inviteLink = await telegramService.createInvite(bot, order.groupId);
-
-      return await ctx.reply(
-        `🎉 <b>Pagamento confirmado com sucesso!</b>
+    return ctx.reply(
+      `🎉 <b>Pagamento confirmado com sucesso!</b>
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -158,32 +153,27 @@ bot.action(/^check_(.+)$/, async (ctx) => {
 🚀 Basta tocar no botão abaixo para entrar imediatamente.
 
 Bom proveito! 😎`,
-        {
-          parse_mode: "HTML",
-          reply_markup: Markup.inlineKeyboard([
-            [Markup.button.url("🔞🔓 Acessar Agora", inviteLink)],
-          ]).reply_markup,
-        },
-      );
-    }
+      {
+        parse_mode: "HTML",
+        reply_markup: Markup.inlineKeyboard([
+          [Markup.button.url("🔞🔓 Acessar Agora", inviteLink)],
+        ]).reply_markup,
+      },
+    );
+  }
 
-    return await ctx.reply(
-      `⌛ <b>Ainda estamos aguardando a confirmação.</b>
+  return ctx.reply(
+    `⌛ <b>Ainda estamos aguardando a confirmação.</b>
 
 Isso normalmente leva alguns segundos após o pagamento.
 
 Assim que concluir o PIX, toque novamente em:
 
-<b>✅ Já paguei</b>
+<b>✅ Já realizei o pagamento</b>
 
 💡 Caso tenha acabado de pagar, aguarde um instante e tente novamente.`,
-      {
-        parse_mode: "HTML",
-      },
-    );
-  } catch (err) {
-    console.error(err.response?.data || err.message || err);
-
-    return await ctx.reply("Erro ao consultar o pagamento.");
-  }
+    {
+      parse_mode: "HTML",
+    },
+  );
 });
