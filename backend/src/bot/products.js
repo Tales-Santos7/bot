@@ -1,6 +1,6 @@
 export const products = [
   {
-    id: 1,
+     id: 1,
     callback: "produto_1",
     name: "🔞🔓Vazadinhos da net",
     price: 10.9,
