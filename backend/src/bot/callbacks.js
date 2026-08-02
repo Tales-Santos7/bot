@@ -127,8 +127,6 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
 
 // VERIFICAR PAGAMENTO
 
-// VERIFICAR PAGAMENTO
-
 bot.action(/^check_(.+)$/, async (ctx) => {
   try {
     await ctx.answerCbQuery();
