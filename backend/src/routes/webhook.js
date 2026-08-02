@@ -9,14 +9,14 @@ const router = express.Router();
 router.post("/oasyfy", async (req, res) => {
   try {
     // Descobriremos o formato correto quando o webhook chegar.
-    const paymentId = req.body.transaction?.id;
+   const paymentId = req.body.transactionId;
 
     if (!paymentId) {
       return res.sendStatus(200);
     }
 
     const event = req.body.event;
-    const status = req.body.transaction?.status;
+    const status = req.body.status;
 
     if (status !== "PAID" && status !== "COMPLETED") {
       return res.sendStatus(200);

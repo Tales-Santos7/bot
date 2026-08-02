@@ -4,6 +4,7 @@ import { products } from "./products.js";
 import paymentService from "../services/paymentService.js";
 import oasyfyService from "../services/oasyfyService.js";
 import telegramService from "../services/telegramService.js";
+import orderService from "../services/orderService.js";
 import QRCode from "qrcode";
 import { Markup, Input } from "telegraf";
 
@@ -51,7 +52,12 @@ products.forEach((product) => {
         parse_mode: "HTML",
 
         reply_markup: Markup.inlineKeyboard([
-          [Markup.button.callback("🚀 Comprar Agora", `comprar_${product.id}`)],
+          [
+            Markup.button.callback(
+              "🔞🔓Comprar Agora",
+              `comprar_${product.id}`,
+            ),
+          ],
 
           [Markup.button.callback("⬅️ Voltar", "menu")],
         ]).reply_markup,
@@ -107,10 +113,12 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
         parse_mode: "HTML",
 
         reply_markup: Markup.inlineKeyboard([
-          Markup.button.callback(
-            "✅ Já realizei o pagamento",
-            `check_${order.paymentId}`,
-          ),
+          [
+            Markup.button.callback(
+              "✅ Já realizei o pagamento",
+              `check_${order.paymentId}`,
+            ),
+          ],
           [Markup.button.callback("❌ Cancelar", "menu")],
         ]).reply_markup,
       });
@@ -131,8 +139,11 @@ bot.action(/^check_(.+)$/, async (ctx) => {
 
   const paymentId = ctx.match[1];
 
-  const payment = await oasyfyService.getPayment(paymentId);
+  const order = orderService.find(paymentId);
 
+  if (!order) {
+    return ctx.reply("Pedido não encontrado.");
+  }
   if (payment.status === "COMPLETED") {
     const inviteLink = await telegramService.createInvite(bot, order.groupId);
     return await ctx.reply(
