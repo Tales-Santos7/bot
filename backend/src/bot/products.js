@@ -5,7 +5,7 @@ export const products = [
     name: "🔞🔓Vazadinhos da net",
     price: 10.9,
 
-    groupId: "-100440198662",
+    groupId: "-1004401986620",
 
    description: `
 🔞 <b>VAZADINHOS DA NET</b>
