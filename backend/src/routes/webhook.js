@@ -18,7 +18,7 @@ router.post("/oasyfy", async (req, res) => {
     const event = req.body.event;
     const status = req.body.status;
 
-    if (status !== "PAID" && status !== "COMPLETED") {
+    if (status !== "COMPLETED" && status !== "COMPLETED") {
       return res.sendStatus(200);
     }
 
