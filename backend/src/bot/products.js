@@ -7,20 +7,24 @@ export const products = [
 
     groupId: "-1004310743484",
 
-    description: `
+   description: `
 🔞 <b>VAZADINHOS DA NET</b>
 
-   ━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━
 
-  🔒 Grupo Privado
+💎 <b>ÁREA VIP EXCLUSIVA</b>
 
-  📁 Conteúdo organizado
+🔒 Acesso 100% privado
 
-  📈 Atualizações frequentes
+🔥 Conteúdo exclusivo
 
-  ⚡ Liberação automática
+📂 Tudo organizado por categorias
 
-  ━━━━━━━━━━━━━━━━━━
+📅 Novas atualizações frequentes
+
+⚡ Liberação automática após o pagamento
+
+━━━━━━━━━━━━━━━━━━
 
 💰 <b>Valor:</b> R$ 10,90`,
   },

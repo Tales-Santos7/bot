@@ -16,13 +16,14 @@ import { Markup, Input } from "telegraf";
 
 bot.action("menu", async (ctx) => {
   await ctx.editMessageCaption(
-    `🔥 <b>Bem-vindo(a) à Área VIP!</b>
+    `🔥 𝗕𝗘𝗠-𝗩𝗜𝗡𝗗𝗢 𝗔𝗢 𝗨𝗡𝗜𝗩𝗘𝗥𝗦𝗢 DO PRAZER 🔥
+🇧🇷 Faveladinhas gostosas, desesperadinhas, ninfetas de bairro, magrinhas peitudas, todo tipo de vazado bruto em um único grupo 😈🥵
 
-Aqui você encontra conteúdos exclusivos, atualizados e organizados por categoria.
+𝗔𝗤𝗨𝗜 É 𝗠𝗔𝗧𝗘𝗥𝗜𝗔𝗟 𝗦𝗨𝗝𝗢, 𝗦𝗘𝗠 𝗙𝗜𝗟𝗧𝗥𝗢:
 
-✨ Escolha uma opção abaixo e descubra o que preparamos para você.
+Selecione o produto que deseja acessar.
 
-👇 Toque em um dos botões para continuar.`,
+Basta clicar em um botão abaixo.`,
     {
       reply_markup: menuPrincipal.reply_markup,
     },
@@ -42,11 +43,17 @@ products.forEach((product) => {
 
 ━━━━━━━━━━━━━━━━━━
 
-⚡ <b>Acesso imediato</b>
-🔒 Conteúdo exclusivo
-📲 Liberação automática após o pagamento
+🚀 <b>Entre em menos de 1 minuto!</b>
 
-👇 Clique em <b>Comprar Agora</b> e receba seu acesso em poucos segundos.`,
+✅ Pagamento rápido via PIX
+
+⚡ Liberação automática
+
+🔓 Acesso imediato após a confirmação
+
+🎯 Sem espera. Sem burocracia.
+
+👇 <b>Clique em "🔞🔓 Comprar Agora"</b> e receba seu acesso em poucos segundos.`,
 
       {
         parse_mode: "HTML",
@@ -86,14 +93,16 @@ products.forEach((product) => {
       });
 
       await ctx.replyWithPhoto(Input.fromBuffer(qrBuffer), {
-        caption: `💎 <b>SEU PAGAMENTO ESTÁ PRONTO!</b>
+        caption: `💎 <b>SEU ACESSO ESTÁ A UM PASSO!</b>
 
 ━━━━━━━━━━━━━━━━━━
 
 📦 <b>Produto</b>
+
 ${order.productName}
 
 💰 <b>Valor</b>
+
 R$ ${order.amount.toFixed(2).replace(".", ",")}
 
 ━━━━━━━━━━━━━━━━━━
@@ -104,11 +113,11 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
 
 ━━━━━━━━━━━━━━━━━━
 
-⚡ Faça o pagamento utilizando o QR Code ou copie o código PIX acima.
+⚡ Escaneie o QR Code ou copie o código PIX acima.
 
-✅ Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.
+🔒 Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.
 
-🚀 É rápido e leva apenas alguns segundos.`,
+🚀 O processo costuma levar apenas alguns segundos.`,
 
         parse_mode: "HTML",
 
@@ -142,11 +151,15 @@ bot.action(/^check_(.+)$/, async (ctx) => {
   const order = orderService.find(paymentId);
 
   if (!order) {
-    return ctx.reply("Pedido não encontrado.");
+    return ctx.reply("❌ Pedido não encontrado.");
   }
+
+  const payment = await oasyfyService.getPayment(paymentId);
+
   if (payment.status === "COMPLETED") {
     const inviteLink = await telegramService.createInvite(bot, order.groupId);
-    return await ctx.reply(
+
+    return ctx.reply(
       `🎉 <b>Pagamento confirmado com sucesso!</b>
 
 ━━━━━━━━━━━━━━━━━━
@@ -155,11 +168,10 @@ bot.action(/^check_(.+)$/, async (ctx) => {
 
 🚀 Basta tocar no botão abaixo para entrar imediatamente.
 
-Bom proveito! 😎`,
-
+Bom proveito! 😎
+`,
       {
         parse_mode: "HTML",
-
         reply_markup: Markup.inlineKeyboard([
           [Markup.button.url("🔞🔓 Acessar Agora", inviteLink)],
         ]).reply_markup,
