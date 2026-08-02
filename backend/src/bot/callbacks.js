@@ -127,6 +127,8 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
 
 // VERIFICAR PAGAMENTO
 
+// VERIFICAR PAGAMENTO
+
 bot.action(/^check_(.+)$/, async (ctx) => {
   try {
     await ctx.answerCbQuery();
@@ -135,20 +137,21 @@ bot.action(/^check_(.+)$/, async (ctx) => {
 
     console.log("PaymentId:", paymentId);
 
+    const order = orderService.find(paymentId);
+
+    if (!order) {
+      return await ctx.reply("Pedido não encontrado.");
+    }
+
     const payment = await oasyfyService.getPayment(paymentId);
 
     console.log(JSON.stringify(payment, null, 2));
-  } catch (err) {
-    console.error(err.response?.data || err.message);
 
-    return ctx.reply("Erro ao consultar o pagamento.");
-  }
+    if (payment.status === "COMPLETED") {
+      const inviteLink = await telegramService.createInvite(bot, order.groupId);
 
-  if (payment.status === "COMPLETED") {
-    const inviteLink = await telegramService.createInvite(bot, order.groupId);
-
-    return ctx.reply(
-      `🎉 <b>Pagamento confirmado com sucesso!</b>
+      return await ctx.reply(
+        `🎉 <b>Pagamento confirmado com sucesso!</b>
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -156,19 +159,18 @@ bot.action(/^check_(.+)$/, async (ctx) => {
 
 🚀 Basta tocar no botão abaixo para entrar imediatamente.
 
-Bom proveito! 😎
-`,
-      {
-        parse_mode: "HTML",
-        reply_markup: Markup.inlineKeyboard([
-          [Markup.button.url("🔞🔓 Acessar Agora", inviteLink)],
-        ]).reply_markup,
-      },
-    );
-  }
+Bom proveito! 😎`,
+        {
+          parse_mode: "HTML",
+          reply_markup: Markup.inlineKeyboard([
+            [Markup.button.url("🔞🔓 Acessar Agora", inviteLink)],
+          ]).reply_markup,
+        },
+      );
+    }
 
-  return await ctx.reply(
-    `⌛ <b>Ainda estamos aguardando a confirmação.</b>
+    return await ctx.reply(
+      `⌛ <b>Ainda estamos aguardando a confirmação.</b>
 
 Isso normalmente leva alguns segundos após o pagamento.
 
@@ -177,5 +179,13 @@ Assim que concluir o PIX, toque novamente em:
 <b>✅ Já paguei</b>
 
 💡 Caso tenha acabado de pagar, aguarde um instante e tente novamente.`,
-  );
+      {
+        parse_mode: "HTML",
+      },
+    );
+  } catch (err) {
+    console.error(err.response?.data || err.message || err);
+
+    return await ctx.reply("Erro ao consultar o pagamento.");
+  }
 });
