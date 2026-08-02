@@ -1,11 +1,10 @@
 import { bot } from "./bot.js";
 import { menuPrincipal } from "./keyboards.js";
-import { Input } from "telegraf";
 
 bot.start(async (ctx) => {
 
   const msg = await ctx.replyWithVideo(
-    Input.fromLocalFile("./src/bot/images/banner.mp4"),
+    Input.fromLocalFile("BAACAgEAAxkDAAIDeWpvzvasqv-6VZkuSoUO8rEIxgjwAAI5CQACaFaAR4DG8EZZo6lIPQQ"),
     {
             caption:
 `🔥 𝗕𝗘𝗠-𝗩𝗜𝗡𝗗𝗢 𝗔𝗢 𝗨𝗡𝗜𝗩𝗘𝗥𝗦𝗢 DO PRAZER 🔥
@@ -21,8 +20,5 @@ Basta clicar em um botão abaixo.`,
         }
 
     );
-
-        console.log("FILE_ID:");
-    console.log(msg.video.file_id);
 
 });
