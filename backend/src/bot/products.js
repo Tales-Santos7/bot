@@ -3,7 +3,7 @@ export const products = [
      id: 1,
     callback: "produto_1",
     name: "🔞🔓Vazadinhos da net",
-    price: 1.0,
+    price: 10.90,
 
     groupId: "-1004401986620",
 
