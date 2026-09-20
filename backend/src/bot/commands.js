@@ -1,5 +1,6 @@
 import { bot } from "./bot.js";
 import { menuPrincipal } from "./keyboards.js";
+import { Markup, Input } from "telegraf";
 
 bot.start(async (ctx) => {
   await ctx.replyWithVideo(

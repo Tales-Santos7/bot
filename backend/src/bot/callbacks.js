@@ -35,22 +35,20 @@ Basta clicar em um botão abaixo.`,
 
 products.forEach((product) => {
   bot.action(product.callback, async (ctx) => {
-    await ctx.editMessageCaption(
-      `${product.description}`,
+    const buttons = product.plans.map((plan) => [
+      Markup.button.callback(
+        `${plan.name} — R$ ${plan.price.toFixed(2).replace(".", ",")}`,
+        `comprar_${product.id}_${plan.id}`,
+      ),
+    ]);
 
+    buttons.push([Markup.button.callback("⬅️ Voltar", "menu")]);
+
+    await ctx.editMessageCaption(
+      `${product.description}\n\n💎 <b>Escolha o seu plano:</b>`,
       {
         parse_mode: "HTML",
-
-        reply_markup: Markup.inlineKeyboard([
-          [
-            Markup.button.callback(
-              `🔞🔓 Comprar Agora — R$ ${product.price.toFixed(2).replace(".", ",")}`,
-              `comprar_${product.id}`,
-            ),
-          ],
-
-          [Markup.button.callback("⬅️ Voltar", "menu")],
-        ]).reply_markup,
+        reply_markup: Markup.inlineKeyboard(buttons).reply_markup,
       },
     );
   });
@@ -63,26 +61,48 @@ products.forEach((product) => {
 */
 
 products.forEach((product) => {
-  bot.action(`comprar_${product.id}`, async (ctx) => {
-    await ctx.answerCbQuery("⏳ Gerando PIX...");
+  product.plans.forEach((plan) => {
+    bot.action(`comprar_${product.id}_${plan.id}`, async (ctx) => {
+      await ctx.answerCbQuery("⏳ Gerando PIX...");
 
-    try {
-      const order = await paymentService.createOrder(product, ctx.from.id);
-      console.log(order);
-      const qrBuffer = await QRCode.toBuffer(order.qrCode, {
-        type: "png",
-        width: 500,
-        margin: 1,
-      });
+      try {
+        // Cria uma cópia do produto com os dados do plano escolhido
+        const selectedProduct = {
+          ...product,
 
-      await ctx.replyWithPhoto(Input.fromBuffer(qrBuffer), {
-        caption: `💎 <b>SEU ACESSO ESTÁ A UM PASSO!</b>
+          name: `${product.name} — ${plan.name}`,
+          price: plan.price,
+
+          planId: plan.id,
+          planName: plan.name,
+          duration: plan.duration,
+        };
+
+        const order = await paymentService.createOrder(
+          selectedProduct,
+          ctx.from.id,
+        );
+
+        console.log("PEDIDO:", order);
+
+        const qrBuffer = await QRCode.toBuffer(order.qrCode, {
+          type: "png",
+          width: 500,
+          margin: 1,
+        });
+
+        await ctx.replyWithPhoto(Input.fromBuffer(qrBuffer), {
+          caption: `💎 <b>SEU ACESSO ESTÁ A UM PASSO!</b>
 
 ━━━━━━━━━━━━━━━━━━
 
 📦 <b>Produto</b>
 
-${order.productName}
+${product.name}
+
+💎 <b>Plano</b>
+
+${plan.name}
 
 💰 <b>Valor</b>
 
@@ -98,33 +118,34 @@ R$ ${order.amount.toFixed(2).replace(".", ",")}
 
 ⚡ Escaneie o QR Code ou copie o código PIX acima.
 
-🔒 Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.
+🔒 Assim que o pagamento for confirmado, seu acesso será liberado automaticamente.`,
+          parse_mode: "HTML",
 
-🚀 O processo costuma levar apenas alguns segundos.`,
+          reply_markup: Markup.inlineKeyboard([
+            [
+              Markup.button.callback(
+                "✅ Já realizei o pagamento",
+                `check_${order.paymentId}`,
+              ),
+            ],
 
-        parse_mode: "HTML",
+            [
+              Markup.button.callback(
+                "⬅️ Escolher outro plano",
+                product.callback,
+              ),
+            ],
+          ]).reply_markup,
+        });
+      } catch (err) {
+        console.error("ERRO AO GERAR PIX:");
+        console.error(err.response?.data || err.message);
 
-        reply_markup: Markup.inlineKeyboard([
-          [
-            Markup.button.callback(
-              "✅ Já realizei o pagamento",
-              `check_${order.paymentId}`,
-            ),
-          ],
-          [Markup.button.callback("❌ Cancelar", "menu")],
-        ]).reply_markup,
-      });
-    } catch (err) {
-      console.error(err.response?.data);
-
-      console.error(err.message);
-
-      await ctx.reply("Erro ao gerar o PIX.");
-    }
+        await ctx.reply("❌ Ocorreu um erro ao gerar o PIX. Tente novamente.");
+      }
+    });
   });
 });
-
-// VERIFICAR PAGAMENTO
 
 // VERIFICAR PAGAMENTO
 
