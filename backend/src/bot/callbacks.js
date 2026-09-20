@@ -6,13 +6,12 @@ import telegramService from "../services/telegramService.js";
 import orderService from "../services/orderService.js";
 import QRCode from "qrcode";
 import { Markup, Input } from "telegraf";
-   
+
 /*
 |--------------------------------------------------------------------------
 | MENU
 |--------------------------------------------------------------------------
 */
-
 
 bot.action("menu", async (ctx) => {
   await ctx.editMessageCaption(
@@ -45,7 +44,7 @@ products.forEach((product) => {
         reply_markup: Markup.inlineKeyboard([
           [
             Markup.button.callback(
-              "🔞🔓Comprar Agora",
+              `🔞🔓 Comprar Agora — R$ ${product.price.toFixed(2).replace(".", ",")}`,
               `comprar_${product.id}`,
             ),
           ],
