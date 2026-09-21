@@ -27,19 +27,19 @@ export const products = [
     ],
 
     description: `
+
 🔞 <b>VAZADINHOS DA NET</b> 
 ━━━━━━━━━━━━━━━━━━ 
+
 💎 <b>ÁREA VIP EXCLUSIVA</b> 
 🔒 Acesso 100% privado 
 🔥 Conteúdo exclusivo 
 📂 Tudo organizado por categorias 
 📅 Novas atualizações frequentes 
 ⚡ Liberação automática após o pagamento
-
-💎 Escolha o seu plano:
 `,
   },
 
 
-  
+
 ];
